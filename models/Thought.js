@@ -17,7 +17,10 @@ const reactionSchema = new Schema({
     },
     createAt:{
         type: Date,
-        default: Date.now
+        default: Date.now,
+        get:function(val){
+            return val.toLocalString();
+        }
         
     }
 })
@@ -31,7 +34,10 @@ const thoughtSchema = new Schema({
     },
     createdAt:{
         type: Date,
-        default: Date.now
+        default: Date.now,
+        get:function(val){
+            return val.toLocalString();
+        }
 
     },
     username:{
