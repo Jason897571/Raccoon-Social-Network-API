@@ -59,9 +59,23 @@ module.exports = {
     },
 
     //add a friend
+    //TODO to fix bug for id testing
     async addFriend(req,res){
         try{
-            const friendData = await User.findOneAndUpdate({_id:req.params.userId},{$addToSet:{"friends":req.friendData}},{new:true})
+            // test if the user exist
+            const isUserExist = await User.findOne({_id:req.params.userId});
+            if(!isUserExist){
+                return res.status(404).json({message:"User not found"});
+            }
+            // test if the friendID is a userID
+            const isFirendExist = await User.findOne({_id:req.params.friendId});
+            if(!isFirendExist){
+                return res.status(404).json({message:"friend not found"});
+            }
+
+            // add friend
+            const friendData = await User.findOneAndUpdate({_id:req.params.userId},{$addToSet:{"friends":req.params.friendId}},{new:true}).select("-__v");
+            
             res.json(friendData);
         }
         catch(err){
@@ -71,7 +85,7 @@ module.exports = {
 
     async removeFriend(req,res){
         try{
-            const removedFriendData = await User.findOneAndDelete({_id:req.params.userId},{$pull:{"friends":req.friendData}},{new:true})
+            const removedFriendData = await User.findOneAndUpdate({_id:req.params.userId},{$pull:{"friends":req.params.friendId}},{new:true})
             res.json({message:"The friend has been removed",removedFriendData});
         }catch(err){
             res.status(500).json(err);

@@ -1,7 +1,7 @@
 const { User, Thought } = require('../models');
 
 module.exports = {
-    async getAllThoughts (req, res){
+    async getAllThoughts(req, res){
         try{
             const allThoughtsData = await Thought.find({}).select('-__v');
             if (!allThoughtsData){
