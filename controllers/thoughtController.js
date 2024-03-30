@@ -30,9 +30,10 @@ module.exports = {
 
     // create a thought
     async createThought(req, res){
-
+ 
         try{
             const isUser = await User.findOne({_id: req.body.userId});
+
             if (!isUser){
                 return res.status(404).json({message: 'No user with that ID'});
             }
@@ -47,11 +48,24 @@ module.exports = {
 
     // update a thought by id
     async updateThought(req, res){
+        try{
+            const updatedThoughtData = await Thought.findOneAndUpdate({_id: req.params.thoughtId}, {$set: req.body}, {new: true});
 
+            res.status(200).json({"message":"Thought is updated",updatedThoughtData});
+        }
+        catch{
+            res.status(500).json(err);
+        }
     },
 
     // delete a thought by id
     async deleteThought(req, res){
-        
+        try{
+            const deletedThoughtData = await Thought.findOneAndDelete({_id: req.params.thoughtId});
+            res.status(200).json({"message":"Thought is deleted",deletedThoughtData});
+        }
+        catch{
+            res.status(500).json(err);
+        }
     }
 }
