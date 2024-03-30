@@ -39,6 +39,9 @@ module.exports = {
             }
 
             const newThoughtData = await Thought.create(req.body);
+
+            const addThoughtToUser = await User.findOneAndUpdate({_id:req.body.userId},{$addToSet:{"thought":req.params.friendId}},{new:true})
+
             res.status(200).json(newThoughtData);
         }
         catch(err){
@@ -67,5 +70,29 @@ module.exports = {
         catch{
             res.status(500).json(err);
         }
+    },
+
+    // create a reaction
+    async createRaction(req, res){
+        try{
+            const newRactionData = await Thought.findOneAndUpdate({_id: req.params.thoughtId}, {$addToSet: {reactions:req.body}}, {new: true});
+            res.status(200).json({"message":"reaction created",newRactionData});
+        }
+        catch{
+            res.status(500).json(err);
+        }
+    },
+
+    // delete a reaction
+    async deleteRaction(req, res){
+        try{
+            const deletedRactionData = await Thought.findOneAndUpdate({_id: req.params.thoughtId}, {$pull: {"reactions": {_id: req.params.reactionId}}}, {new: true});
+            res.status(200).json({"message":"reaction deleted",deletedRactionData});
+        }
+        catch{
+            res.status(500).json(err);
+        }
     }
+
+
 }
