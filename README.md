@@ -6,7 +6,7 @@
     <img src="./image/logo.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">Raccoon Note Taker</h3>
+  <h3 align="center">Raccoon Social Network API</h3>
 
   <p align="center">
     This is back-end API for a social network system <br /> You could use it to search information about users, thoughts from users and reactions. On the other hand, users can add each other as friends.
