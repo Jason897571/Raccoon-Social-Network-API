@@ -52,6 +52,10 @@ module.exports = {
             if (userData == null) {
                 return res.status(404).json({ message: 'User not found' });
               }
+            
+            // delete related thoughts
+            await Thought.deleteMany({userId:req.params.userId});
+            
             res.status(200).json({message:"user has been deleted","deleted user": userData});
         }catch(err){
             res.status(500).json(err);
